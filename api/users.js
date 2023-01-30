@@ -1,6 +1,7 @@
 /* eslint-disable no-useless-catch */
 const express = require("express");
 const router = express.Router();
+// require('./db');
 
 // POST /api/users/register
 
