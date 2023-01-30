@@ -1,12 +1,13 @@
 // require in the database adapter functions as you write them (createUser, createActivity...)
-const { createUser, getUser } = require('./');
+const { createUser, createActivity } = require('./');
 const client = require("./client")
 
 async function dropTables() {
   try {
     console.log("Dropping All Tables...");
     await client.query(`
-    DROP TABLE IF EXISTS users
+    DROP TABLE IF EXISTS activities;
+    DROP TABLE IF EXISTS users;
     `);
   } catch (err) {
     console.error('Error while dropping tables!');
@@ -24,7 +25,12 @@ async function createTables() {
       id SERIAL PRIMARY KEY,
       username VARCHAR(255) UNIQUE NOT NULL,
       password VARCHAR(255) NOT NULL
-    )
+    );
+    CREATE TABLE activities(
+      id SERIAL PRIMARY KEY,
+      name VARCHAR(255) UNIQUE NOT NULL,
+      description TEXT NOT NULL
+    );
     `);
   } catch (err) {
     console.error('Error constructing tables!');
