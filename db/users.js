@@ -36,16 +36,16 @@ async function getUserById(userId) {
 }
 
 async function getUserByUsername(userName) {
-// try {
-//   const { rows: [user] } = await client.query (`
-//   SELECT * FROM users 
-//   WHERE username=$1
-//   `, [username]);
-//   return user;
+try {
+  const { rows: [user] } = await client.query (`
+  SELECT * FROM users 
+  WHERE username=$1
+  `, [userName]);
+  return user;
   
-// } catch (error) {
-//   throw error;
-// }
+} catch (error) {
+  throw error;
+}
   
 }
 
