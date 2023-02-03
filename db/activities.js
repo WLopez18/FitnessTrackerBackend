@@ -55,8 +55,59 @@ async function getActivityByName(name) {
 
 async function attachActivitiesToRoutines(routines) {
   // select and return an array of all activities
-  console.log(routines, "LOOK HERE");
-}
+  const routinesById = {}
+  routines.forEach((routine) => {
+    if (!routinesById[routine.id]) {
+      routinesById[routine.id] = {
+        id: routine.id,
+        creatorId: routine.creatorId,
+        isPublic: routine.isPublic,
+        name: routine.name,
+        goal: routine.goal,
+        creatorName: routine.creatorName,
+        activities: [],
+      };
+    }
+    const activity = {
+      id: routine.activityId,
+      name: routine.activityName,
+      routineId: routine.id,
+      routineActivityId: routine.routineActivityId,
+      description: routine.description,
+      count: routine.count,
+      duration: routine.duration,
+    };
+    routinesById[routine.id].activities.push(activity);
+  });
+  return routinesById;
+
+  // const attachActivitiesToRoutines = (routines) => {
+  //   const routinesById = {};
+  //   routines.forEach((routine) => {
+  //     if (!routinesById[routine.id]) {
+  //       routinesById[routine.id] = {
+  //         id: routine.id,
+  //         creatorId: routine.creatorId,
+  //         isPublic: routine.isPublic,
+  //         name: routine.name,
+  //         goal: routine.goal,
+  //         activities: [],
+  //       };
+  //     }
+  //     const activity = {
+  //       name: routine.activityName,
+  //       id: routine.activityId,
+  //       description: routine.description,
+  //       count: routine.count,
+  //       duration: routine.duration,
+  //     };
+  //     routinesById[routine.id].activities.push(activity);
+  //   });
+
+  //   return routinesById;
+  // };
+
+};
 
 async function updateActivity({ id, ...fields }) {
   const setString = Object.keys(fields).map(

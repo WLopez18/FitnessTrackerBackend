@@ -1,3 +1,4 @@
+const { attachActivitiesToRoutines } = require("./activities");
 const client = require("./client");
 
 async function createRoutine({ creatorId, isPublic, name, goal }) {
@@ -19,33 +20,48 @@ async function createRoutine({ creatorId, isPublic, name, goal }) {
   }
 }
 
-async function getRoutineById(id) {}
+async function getRoutineById(id) { }
 
 async function getRoutinesWithoutActivities() {
   try {
     const { rows } = await client.query(`
     SELECT * FROM routines;
     `);
-    
     return rows;
   } catch (err) {
     throw err;
   }
 }
 
-async function getAllRoutines() {}
+async function getAllRoutines() {
+  try {
+    const { rows } = await client.query(`
+    SELECT routines.*, routine_activities.id AS "routineActivityId", count, duration, activities.name as "activityName", activities.id AS "activityId", description, username as "creatorName"
+    FROM routines
+    JOIN routine_activities ON routines.id = routine_activities."routineId"
+    JOIN activities ON activities.id = routine_activities."activityId"
+    JOIN users ON "creatorId" = users.id
+    `);
+    // JOIN users ON users.id=routines."creatorId"
+    let routines = await attachActivitiesToRoutines(rows);
+    routines = Object.values(routines)
+    return routines;
+  } catch (err) {
+    throw err;
+  }
+}
 
-async function getAllPublicRoutines() {}
+async function getAllPublicRoutines() { }
 
-async function getAllRoutinesByUser({ username }) {}
+async function getAllRoutinesByUser({ username }) { }
 
-async function getPublicRoutinesByUser({ username }) {}
+async function getPublicRoutinesByUser({ username }) { }
 
-async function getPublicRoutinesByActivity({ id }) {}
+async function getPublicRoutinesByActivity({ id }) { }
 
-async function updateRoutine({ id, ...fields }) {}
+async function updateRoutine({ id, ...fields }) { }
 
-async function destroyRoutine(id) {}
+async function destroyRoutine(id) { }
 
 module.exports = {
   getRoutineById,
