@@ -34,25 +34,69 @@ async function getRoutineActivityById(id) {
 
 async function getRoutineActivitiesByRoutine({ id }) {
   try {
-    const { rows: [routine] } = await client.query(`
-    SELECT routine_activities.*
-    FROM routines_activities 
-    JOIN routines ON routine_activities."routineId"
+    const { rows } = await client.query(`
+    SELECT *
+    FROM routine_activities
+    JOIN routines ON routines.id=routine_activities."routineId"
     JOIN activities ON activities.id=routine_activities."activityId"
-    WHERE routines.id=$1
+    WHERE "routineId" = $1
     `, [id])
-    console.log(routine)
-    return routine;
+    return rows;
   } catch (err) {
     throw err;
   }
 }
 
-async function updateRoutineActivity({ id, ...fields }) {}
+async function updateRoutineActivity({ id, ...fields }) {
+  try {
+    const setString = Object.keys(fields).map(
+      (key, index) => `"${key}"=$${index + 1}`
+    ).join(', ');
+    const { rows: [routineActivity] } = await client.query(`
+    UPDATE routine_activities
+    SET ${setString}
+    WHERE id=${id}
+    RETURNING *;
+    `, Object.values(fields));
+    return routineActivity;
+  } catch (err) {
+    throw err;
+  }
+}
 
-async function destroyRoutineActivity(id) {}
+async function destroyRoutineActivity(id) {
+  try {
+    const { rows: [deleteRoutineActivity] } = await client.query(`
+    DELETE 
+    FROM routine_activities
+    WHERE id=$1
+    RETURNING *;
+    `, [id]);
+    return deleteRoutineActivity;
+  } catch (err) {
+    throw err;
+  }
+}
 
-async function canEditRoutineActivity(routineActivityId, userId) {}
+async function canEditRoutineActivity(routineActivityId, userId) {
+  try {
+    // const setString = Object.keys(fields).map(
+    //   (key, index) => `"${key}"=$${index + 1}`
+    // ).join(', ');
+    const { rows: [canEdit] } = await client.query(`
+    SELECT * 
+    FROM routine_activities, users
+    WHERE routine_activities.id=$1 AND users.id=$2
+    `, [routineActivityId, userId]);
+    if (canEdit) {
+      console.log("SUCCESS!")
+    } else {
+      console.log("FAIL!")
+    }
+  } catch (err) {
+    throw err;
+  }
+}
 
 module.exports = {
   getRoutineActivityById,

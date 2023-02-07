@@ -41,7 +41,6 @@ async function getUserById(userId) {
   } catch (err) {
     throw err;
   }
-
 }
 
 async function getUserByUsername(userName) {

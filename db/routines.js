@@ -77,7 +77,8 @@ async function getAllRoutinesByUser({ username }) {
     JOIN routine_activities ON routines.id = routine_activities."routineId"
     JOIN activities ON activities.id = routine_activities."activityId"
     JOIN users ON "creatorId" = users.id
-    `)
+    WHERE users.username=$1
+    `, [username])
     let routines = await attachActivitiesToRoutines(rows);
     routines = Object.values(routines)
     return routines;

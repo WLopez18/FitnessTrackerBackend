@@ -15,7 +15,7 @@ const {
 } = require("../../db");
 const { createFakeUser } = require("../helpers");
 
-xdescribe("DB Users", () => {
+describe("DB Users", () => {
   describe("createUser({ username, password })", () => {
     it("Creates and returns the user", async () => {
       const fakeUserData = {
@@ -110,8 +110,8 @@ xdescribe("DB Users", () => {
     });
   });
 
-  describe("EXTRA CREDIT: Hashing Passwords", () => {
-    xit("EXTRA CREDIT: Does not store plaintext password in the database", async () => {
+  xdescribe("EXTRA CREDIT: Hashing Passwords", () => {
+    it("EXTRA CREDIT: Does not store plaintext password in the database", async () => {
       const fakeUserData = {
         username: "Harry",
         password: faker.internet.password(),
@@ -121,7 +121,7 @@ xdescribe("DB Users", () => {
       expect(queriedUser.password).not.toBe(fakeUserData.password);
     });
 
-    xit("EXTRA CREDIT: Hashes the password (salted 10 times) before storing it to the database", async () => {
+    it("EXTRA CREDIT: Hashes the password (salted 10 times) before storing it to the database", async () => {
       const fakeUserData = {
         username: "Nicky",
         password: faker.internet.password(),
