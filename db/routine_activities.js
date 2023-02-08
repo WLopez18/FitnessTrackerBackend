@@ -92,7 +92,6 @@ async function canEditRoutineActivity(routineActivityId, userId) {
 
   return (canEdit.creatorId === userId)
     
-    
   } catch (err) {
     throw err;
   }
