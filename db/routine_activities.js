@@ -85,14 +85,14 @@ async function canEditRoutineActivity(routineActivityId, userId) {
     // ).join(', ');
     const { rows: [canEdit] } = await client.query(`
     SELECT * 
-    FROM routine_activities, users
-    WHERE routine_activities.id=$1 AND users.id=$2
-    `, [routineActivityId, userId]);
-    if (canEdit) {
-      console.log("SUCCESS!")
-    } else {
-      console.log("FAIL!")
-    }
+    FROM routine_activities
+    LEFT JOIN routines ON routines.id = routine_activities."routineId"
+    WHERE routine_activities.id=$1
+    `, [routineActivityId]);
+
+  return (canEdit.creatorId === userId)
+    
+    
   } catch (err) {
     throw err;
   }

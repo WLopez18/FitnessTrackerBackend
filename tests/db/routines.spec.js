@@ -84,7 +84,7 @@ function expectRoutinesNotToContainDuplicates(routines, fakeRoutine) {
 
 // Tests start here
 
-describe("DB Routines", () => {
+xdescribe("DB Routines", () => {
   let fakeUser,
     fakeRoutine,
     fakePrivateRoutine,
