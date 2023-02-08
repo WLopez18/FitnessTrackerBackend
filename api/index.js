@@ -4,8 +4,8 @@ const router = express.Router();
 // GET /api/health
 router.get('/health', (req, res, next) => {
     try {
-        res.send("It is healthy");
-        
+        res.send({ message: "It is healthy" });
+
     } catch (ex) {
         next(ex);
     }
