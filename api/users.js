@@ -4,7 +4,7 @@ const router = express.Router();
 // require('./db');
 const jwt = require("jsonwebtoken");
 const { JWT_SECRET } = process.env
-const { createUser, getUserByUsername, getUser } = require("../db");
+const { createUser, getUserByUsername, getUser, getPublicRoutinesByUser, getAllRoutinesByUser } = require("../db");
 const { UserDoesNotExistError, PasswordTooShortError, UserTakenError } = require('../errors');
 
 // POST /api/users/register
@@ -99,6 +99,22 @@ router.get('/me', async (req, res, next) => {
 
 // GET /api/users/:username/routines
 router.get('/:username/routines', async (req, res, next) => {
+    try {
+        const { username } = req.params;
+        const token = req.header("Authorization");
+        const newToken = token.slice(7);
+        const verify = jwt.verify(newToken, process.env.JWT_SECRET)
+        if(verify.username === username){
+            const allRoutines = await getAllRoutinesByUser({username});
+            res.send(allRoutines);
+        }
+        const publicRoutines = await getPublicRoutinesByUser({username});
+        res.send(publicRoutines)
+       
+    } catch (err) {
+        next(err);
+        
+    }
 
 });
 //TO GET ACCESS TO :USERNAME USE req.params
