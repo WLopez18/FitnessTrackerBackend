@@ -10,4 +10,10 @@ app.use(express.json());
 const apiRouter = require('./api');
 app.use('/api', apiRouter);
 
+app.use((req, res) => {
+    res.status(404).send({
+        message: "Page not found."
+    })
+});
+
 module.exports = app;

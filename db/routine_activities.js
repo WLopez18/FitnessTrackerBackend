@@ -37,8 +37,6 @@ async function getRoutineActivitiesByRoutine({ id }) {
     const { rows } = await client.query(`
     SELECT *
     FROM routine_activities
-    JOIN routines ON routines.id=routine_activities."routineId"
-    JOIN activities ON activities.id=routine_activities."activityId"
     WHERE "routineId" = $1
     `, [id])
     return rows;
@@ -90,8 +88,8 @@ async function canEditRoutineActivity(routineActivityId, userId) {
     WHERE routine_activities.id=$1
     `, [routineActivityId]);
 
-  return (canEdit.creatorId === userId)
-    
+    return (canEdit.creatorId === userId)
+
   } catch (err) {
     throw err;
   }
