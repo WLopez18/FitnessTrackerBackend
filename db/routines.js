@@ -20,7 +20,17 @@ async function createRoutine({ creatorId, isPublic, name, goal }) {
   }
 }
 
-async function getRoutineById(id) { }
+async function getRoutineById(id) {
+  try {
+    const { rows: [routine] } = await client.query(`
+      SELECT * FROM routines
+      WHERE id = $1
+    `, [id])
+    return routine;
+  } catch (error) {
+    throw error;
+  }
+ }
 
 async function getRoutinesWithoutActivities() {
   try {
@@ -163,6 +173,7 @@ async function destroyRoutine(id) {
     DELETE
     FROM routines
     WHERE id=$1
+    RETURNING *
     `, [id]);
     return deleteRoutine;
   } catch (err) {

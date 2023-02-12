@@ -5,7 +5,7 @@ const router = express.Router();
 const jwt = require("jsonwebtoken");
 const { JWT_SECRET } = process.env
 const { createUser, getUserByUsername, getPublicRoutinesByUser, getAllRoutinesByUser } = require("../db");
-const { UserDoesNotExistError, PasswordTooShortError, UserTakenError } = require('../errors');
+const { PasswordTooShortError, UserTakenError } = require('../errors');
 
 // POST /api/users/register
 router.post('/register', async (req, res, next) => {
